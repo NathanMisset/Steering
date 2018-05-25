@@ -9,6 +9,10 @@ namespace Opdracht3_Steering {
         private float rotation;
 
         // add maxSteering, maxSpeed and arrivingRadius
+        private float maxSteering;
+        private float maxSpeed;
+        private float arrivingRadius;
+        private Vector2 desiredVelocity;
 
         public SpaceShip(string assetName, Vector2 position, float scale, float maxSteering, float maxSpeed, float arrivingRadius, float mass)
             : base(assetName, 1, "spaceship") {
@@ -18,6 +22,9 @@ namespace Opdracht3_Steering {
             this.mass = mass;
             rotation = 0;
             origin = new Vector2(Width / 2f, Height / 2f);
+            this.maxSteering = maxSteering;
+            this.maxSpeed = maxSpeed;
+            this.arrivingRadius = arrivingRadius;
         }
 
         public override void Update(GameTime gameTime) {
@@ -25,7 +32,21 @@ namespace Opdracht3_Steering {
             target = GameWorld.Find("target").Position;
 
             // calculate steering direction
+            //1
+            desiredVelocity = target - position;
+            //2
+            desiredVelocity =Truncate(desiredVelocity, maxSpeed);
+            //3
 
+            desiredVelocity = desiredVelocity - velocity;
+            //4
+            desiredVelocity = Truncate(desiredVelocity, maxSteering);
+            //5
+            desiredVelocity = desiredVelocity / mass;
+            //6
+            desiredVelocity = Truncate(desiredVelocity, maxSpeed);
+
+            velocity += desiredVelocity;
             // arriving and stopping
 
             // apply rotation

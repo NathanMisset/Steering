@@ -9,7 +9,7 @@ namespace Opdracht3_Steering {
             var ball = new Target("PurpleSoftColorBall", new Vector2(600, 400), 0.5f);
             Add(ball);
 
-            var ship = new SpaceShip("blueship3", new Vector2(600, 400), 1f, 0.2f, 7f, 150f, 1f);
+            var ship = new SpaceShip("blueship3", new Vector2(600, 400), 1f, 0.2f, 100f, 150f, 1f);
             Add(ship);
         }
 
