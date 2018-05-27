@@ -25,6 +25,11 @@
 /processorParam:TextureFormat=Color
 /build:blue_stars.jpg
 
+#begin BlueBallX.xnb
+/importer:
+/processor:
+/build:BlueBallX.xnb
+
 #begin blueship3.png
 /importer:TextureImporter
 /processor:TextureProcessor

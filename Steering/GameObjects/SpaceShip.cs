@@ -7,12 +7,14 @@ namespace Opdracht3_Steering {
         protected float mass;
         private Vector2 target;
         private float rotation;
-
+        
         // add maxSteering, maxSpeed and arrivingRadius
         private float maxSteering;
         private float maxSpeed;
         private float arrivingRadius;
         private Vector2 desiredVelocity;
+        private double distanceToTarget;
+        private float speed;
 
         public SpaceShip(string assetName, Vector2 position, float scale, float maxSteering, float maxSpeed, float arrivingRadius, float mass)
             : base(assetName, 1, "spaceship") {
@@ -25,35 +27,56 @@ namespace Opdracht3_Steering {
             this.maxSteering = maxSteering;
             this.maxSpeed = maxSpeed;
             this.arrivingRadius = arrivingRadius;
+            speed = maxSpeed;
+
         }
 
         public override void Update(GameTime gameTime) {
             // get target
             target = GameWorld.Find("target").Position;
-
             // calculate steering direction
-            //1
+            // 1
             desiredVelocity = target - position;
-            //2
-            desiredVelocity =Truncate(desiredVelocity, maxSpeed);
-            //3
-
+            // 2
+            desiredVelocity = Truncate(desiredVelocity, speed);
+            // 3
             desiredVelocity = desiredVelocity - velocity;
-            //4
+            // 4
             desiredVelocity = Truncate(desiredVelocity, maxSteering);
-            //5
+            // 5
             desiredVelocity = desiredVelocity / mass;
-            //6
-            desiredVelocity = Truncate(desiredVelocity, maxSpeed);
+            // 6
+            desiredVelocity = Truncate(desiredVelocity, speed);
+
 
             velocity += desiredVelocity;
-            // arriving and stopping
 
+            // arriving and stopping
+            // 1
+            desiredVelocity = target - position;
+            desiredVelocity.X = desiredVelocity.X * desiredVelocity.X;
+            desiredVelocity.Y = desiredVelocity.Y * desiredVelocity.Y;
+            // 2
+            distanceToTarget = Math.Sqrt(desiredVelocity.X + desiredVelocity.Y);
+            // 3
+            if (distanceToTarget < 5)
+            {
+                velocity = Vector2.Zero;
+            }//4
+            else if (distanceToTarget > arrivingRadius)
+            {
+                speed = maxSpeed;
+            }
+            else
+            {//5
+                speed *= (float)distanceToTarget / arrivingRadius;
+            }
             // apply rotation
             if (velocity != Vector2.Zero) {
                 var angle = (float)Math.Atan2(velocity.Y, velocity.X);
                 rotation = angle + (float)Math.PI / 2;
             }
+           
 
             base.Update(gameTime);
         }
